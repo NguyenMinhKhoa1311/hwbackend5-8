@@ -6,7 +6,7 @@ import { Product } from 'src/schemas/product.schema';
 
 @Injectable()
 export class ProductService {
-  constructor(@InjectModel(Product.name) private productModel: Model<Product>) {}
+  constructor(@InjectModel(Product.name) private productModel: Model<Product>) { }
 
   async create(createCatDto: Product): Promise<Product> {
     const createdCat = new this.productModel(createCatDto);
@@ -16,13 +16,16 @@ export class ProductService {
   async findAll(): Promise<Product[]> {
     return this.productModel.find().exec();
   }
-  async findOne(id: string): Promise<Product>{
+  async findOne(id: string): Promise<Product> {
     return this.productModel.findById(id).exec();
   }
-  async update(id: string, updateProductDto: Product): Promise<Product>{
-    return await this.productModel.findByIdAndUpdate(id,updateProductDto,{new: true}).exec();
+  async update(id: string, updateProductDto: Product): Promise<Product> {
+    return await this.productModel.findByIdAndUpdate(id, updateProductDto, { new: true }).exec();
   }
-  async remove(id: string): Promise<any>{
-    return await this.productModel.findByIdAndRemove(id).exec();
+  async remove(id: string): Promise<any> {
+    await this.productModel.findByIdAndRemove(id).exec();
+    return {
+      text: "Xoá thành công"
+    }
   }
 }
